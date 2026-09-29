@@ -1,0 +1,106 @@
+{
+  "model_type": "CatBoostClassifier",
+  "model_version": "catboost-vegetation-v1",
+  "target": "Degradation_Level",
+  "classes": [
+    "Healthy",
+    "Moderately Degraded",
+    "Severely Degraded"
+  ],
+  "features": [
+    "NDVI",
+    "SAVI",
+    "RVI",
+    "ARI",
+    "MSI",
+    "PRI",
+    "Canopy_Cover_Percent",
+    "Vegetation_Cover_Percent",
+    "Species_Richness_Count",
+    "Soil_Moisture_Percent",
+    "Soil_Organic_Carbon_Percent",
+    "Erosion_Risk_Index",
+    "Human_Disturbance_Index",
+    "Ecosystem_Stability_Score"
+  ],
+  "random_state": 42,
+  "training_samples": 4800,
+  "test_samples": 1200,
+  "total_samples": 6000,
+  "metrics": {
+    "test_accuracy": 0.9383,
+    "test_precision_macro": 0.9337,
+    "test_recall_macro": 0.9231,
+    "test_f1_macro": 0.9282,
+    "test_f1_weighted": 0.9382,
+    "cv_accuracy_mean": 0.9253,
+    "cv_accuracy_std": 0.0063,
+    "cv_f1_macro_mean": 0.9157,
+    "cv_f1_macro_std": 0.0063,
+    "cv_f1_weighted_mean": 0.9252,
+    "cv_f1_weighted_std": 0.0064,
+    "cv_accuracy_folds": [
+      0.9258,
+      0.9225,
+      0.915,
+      0.9308,
+      0.9325
+    ],
+    "cv_f1_macro_folds": [
+      0.9157,
+      0.9117,
+      0.9065,
+      0.9245,
+      0.9202
+    ],
+    "cv_f1_weighted_folds": [
+      0.926,
+      0.9226,
+      0.9145,
+      0.9308,
+      0.9323
+    ]
+  },
+  "confusion_matrix": [
+    [
+      578,
+      22,
+      0
+    ],
+    [
+      25,
+      420,
+      10
+    ],
+    [
+      0,
+      17,
+      128
+    ]
+  ],
+  "feature_importance": {
+    "NDVI": 6.609615580663857,
+    "SAVI": 11.320119602535375,
+    "RVI": 6.9031462717179055,
+    "ARI": 3.604712507510389,
+    "MSI": 27.194957363100922,
+    "PRI": 10.57515862119729,
+    "Canopy_Cover_Percent": 5.595825634291926,
+    "Vegetation_Cover_Percent": 3.266295180347688,
+    "Species_Richness_Count": 2.517266071257816,
+    "Soil_Moisture_Percent": 3.8044967317070766,
+    "Soil_Organic_Carbon_Percent": 2.5380889910570885,
+    "Erosion_Risk_Index": 6.918856139393985,
+    "Human_Disturbance_Index": 5.674383417536469,
+    "Ecosystem_Stability_Score": 3.477077887682175
+  },
+  "validation_method": "5-Fold Stratified Cross Validation + Hold-out Test Set",
+  "parameters": {
+    "iterations": 500,
+    "learning_rate": 0.05,
+    "depth": 6,
+    "l2_leaf_reg": 3.0,
+    "loss_function": "MultiClass",
+    "early_stopping_rounds": 50
+  }
+}

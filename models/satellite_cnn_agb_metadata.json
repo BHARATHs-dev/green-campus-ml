@@ -1,0 +1,304 @@
+{
+  "model": "Satellite CNN",
+  "task": "AGBD Regression",
+  "target": "AGBD",
+  "unit": "Mg/ha",
+  "carbon_factor": 0.47,
+  "status": "ready",
+  "type": "trained",
+  "in_channels": 15,
+  "bands": [
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B8A",
+    "B11",
+    "B12"
+  ],
+  "indices": [
+    "ndvi",
+    "evi",
+    "savi",
+    "ndwi",
+    "msi"
+  ],
+  "model_version": "satellite-cnn-v1",
+  "prototype": false,
+  "dataset": "Trees in Satellite Imagery (2,444 patches)",
+  "dataset_size": 2444,
+  "train_size": 1704,
+  "validation_size": 360,
+  "test_size": 380,
+  "epochs": 25,
+  "best_epoch": 19,
+  "best_val_loss": 3.9834,
+  "metrics": {
+    "r2": 0.5164,
+    "mae": 4.3731,
+    "rmse": 5.4546
+  },
+  "test_metrics": {
+    "loss": 3.8972,
+    "mae": 4.3731,
+    "rmse": 5.4546,
+    "r2": 0.5164
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 139.879,
+      "val_loss": 94.306,
+      "val_mae": 94.806,
+      "val_rmse": 98.2842,
+      "val_r2": -61.6188
+    },
+    {
+      "epoch": 2,
+      "train_loss": 41.0387,
+      "val_loss": 19.9503,
+      "val_mae": 20.4403,
+      "val_rmse": 30.242,
+      "val_r2": -4.9287
+    },
+    {
+      "epoch": 3,
+      "train_loss": 15.1191,
+      "val_loss": 6.3278,
+      "val_mae": 6.8064,
+      "val_rmse": 10.7988,
+      "val_r2": 0.2441
+    },
+    {
+      "epoch": 4,
+      "train_loss": 11.8134,
+      "val_loss": 5.8058,
+      "val_mae": 6.2873,
+      "val_rmse": 9.5605,
+      "val_r2": 0.4075
+    },
+    {
+      "epoch": 5,
+      "train_loss": 11.0383,
+      "val_loss": 4.9272,
+      "val_mae": 5.4086,
+      "val_rmse": 7.7409,
+      "val_r2": 0.6116
+    },
+    {
+      "epoch": 6,
+      "train_loss": 10.9991,
+      "val_loss": 6.7912,
+      "val_mae": 7.2768,
+      "val_rmse": 10.0899,
+      "val_r2": 0.3401
+    },
+    {
+      "epoch": 7,
+      "train_loss": 10.9868,
+      "val_loss": 6.1659,
+      "val_mae": 6.6488,
+      "val_rmse": 8.1492,
+      "val_r2": 0.5695
+    },
+    {
+      "epoch": 8,
+      "train_loss": 10.3162,
+      "val_loss": 5.2767,
+      "val_mae": 5.757,
+      "val_rmse": 8.5651,
+      "val_r2": 0.5244
+    },
+    {
+      "epoch": 9,
+      "train_loss": 11.3614,
+      "val_loss": 5.8388,
+      "val_mae": 6.3227,
+      "val_rmse": 8.3626,
+      "val_r2": 0.5467
+    },
+    {
+      "epoch": 10,
+      "train_loss": 9.6739,
+      "val_loss": 5.152,
+      "val_mae": 5.6376,
+      "val_rmse": 7.1304,
+      "val_r2": 0.6704
+    },
+    {
+      "epoch": 11,
+      "train_loss": 10.1253,
+      "val_loss": 5.9257,
+      "val_mae": 6.4095,
+      "val_rmse": 8.1107,
+      "val_r2": 0.5736
+    },
+    {
+      "epoch": 12,
+      "train_loss": 10.2299,
+      "val_loss": 4.4809,
+      "val_mae": 4.9661,
+      "val_rmse": 6.3531,
+      "val_r2": 0.7384
+    },
+    {
+      "epoch": 13,
+      "train_loss": 9.5615,
+      "val_loss": 7.5047,
+      "val_mae": 7.9987,
+      "val_rmse": 9.1529,
+      "val_r2": 0.4569
+    },
+    {
+      "epoch": 14,
+      "train_loss": 9.205,
+      "val_loss": 5.5912,
+      "val_mae": 6.0781,
+      "val_rmse": 7.5751,
+      "val_r2": 0.628
+    },
+    {
+      "epoch": 15,
+      "train_loss": 9.2053,
+      "val_loss": 5.8901,
+      "val_mae": 6.3775,
+      "val_rmse": 7.823,
+      "val_r2": 0.6033
+    },
+    {
+      "epoch": 16,
+      "train_loss": 9.2985,
+      "val_loss": 5.7223,
+      "val_mae": 6.2115,
+      "val_rmse": 7.4738,
+      "val_r2": 0.6379
+    },
+    {
+      "epoch": 17,
+      "train_loss": 9.1012,
+      "val_loss": 4.2118,
+      "val_mae": 4.6878,
+      "val_rmse": 6.7056,
+      "val_r2": 0.7085
+    },
+    {
+      "epoch": 18,
+      "train_loss": 8.6496,
+      "val_loss": 5.371,
+      "val_mae": 5.8557,
+      "val_rmse": 7.135,
+      "val_r2": 0.67
+    },
+    {
+      "epoch": 19,
+      "train_loss": 8.598,
+      "val_loss": 3.9834,
+      "val_mae": 4.4601,
+      "val_rmse": 5.8943,
+      "val_r2": 0.7748
+    },
+    {
+      "epoch": 20,
+      "train_loss": 8.5301,
+      "val_loss": 5.2978,
+      "val_mae": 5.7807,
+      "val_rmse": 7.2141,
+      "val_r2": 0.6626
+    },
+    {
+      "epoch": 21,
+      "train_loss": 8.3616,
+      "val_loss": 4.7448,
+      "val_mae": 5.2257,
+      "val_rmse": 6.4727,
+      "val_r2": 0.7284
+    },
+    {
+      "epoch": 22,
+      "train_loss": 8.942,
+      "val_loss": 4.9999,
+      "val_mae": 5.4747,
+      "val_rmse": 7.0425,
+      "val_r2": 0.6785
+    },
+    {
+      "epoch": 23,
+      "train_loss": 8.7027,
+      "val_loss": 5.3989,
+      "val_mae": 5.8776,
+      "val_rmse": 7.3102,
+      "val_r2": 0.6536
+    },
+    {
+      "epoch": 24,
+      "train_loss": 8.4041,
+      "val_loss": 4.7824,
+      "val_mae": 5.2662,
+      "val_rmse": 6.6526,
+      "val_r2": 0.7131
+    },
+    {
+      "epoch": 25,
+      "train_loss": 8.0168,
+      "val_loss": 4.4276,
+      "val_mae": 4.9093,
+      "val_rmse": 6.2186,
+      "val_r2": 0.7493
+    }
+  ],
+  "channel_names": [
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B8A",
+    "B11",
+    "B12",
+    "ndvi",
+    "evi",
+    "savi",
+    "ndwi",
+    "msi"
+  ],
+  "mean": [
+    0.2980536222457886,
+    0.2532802224159241,
+    0.1547302007675171,
+    0.19168387353420258,
+    0.22863972187042236,
+    0.26559680700302124,
+    0.30255231261253357,
+    0.30255231261253357,
+    0.12378154695034027,
+    0.09283645451068878,
+    0.3259127140045166,
+    -0.04320620372891426,
+    0.23134645819664001,
+    -0.08885414153337479,
+    -0.42144787311553955
+  ],
+  "std": [
+    0.032454393804073334,
+    0.03623458743095398,
+    0.03068503737449646,
+    0.031337037682533264,
+    0.03379467874765396,
+    0.0377030149102211,
+    0.04268636927008629,
+    0.04268636927008629,
+    0.024562906473875046,
+    0.018419690430164337,
+    0.055357906967401505,
+    0.9881652593612671,
+    0.040374379605054855,
+    0.012984772212803364,
+    0.051253918558359146
+  ],
+  "note": "Trained Satellite CNN on 2,444 satellite forest canopy image patches."
+}

@@ -1,0 +1,12 @@
+numpy
+pandas
+scikit-learn
+joblib
+catboost
+fastapi
+uvicorn
+pydantic
+torch
+torchvision
+pillow
+rasterio

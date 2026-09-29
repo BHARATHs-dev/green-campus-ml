@@ -1,0 +1,24 @@
+{
+  "model": "Satellite CNN",
+  "version": "satellite-cnn-v1",
+  "evaluated_at": "2026-09-20T15:25:03Z",
+  "test_metrics": {
+    "loss": 3.8972,
+    "mae": 4.3731,
+    "rmse": 5.4546,
+    "r2": 0.5164
+  },
+  "validation_metrics": {
+    "loss": 3.9834,
+    "mae": 4.4601,
+    "rmse": 5.8943,
+    "r2": 0.7748
+  },
+  "hyperparameters": {
+    "epochs": 25,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "in_channels": 15,
+    "architecture": "SatelliteCNN(Conv32->Conv64->Conv128->AdaptiveAvgPool->FC256->FC1)"
+  }
+}

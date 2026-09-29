@@ -1,0 +1,94 @@
+{
+  "project": "AI-Based Green Campus Biomass Monitoring System",
+  "date": "2026-08-30",
+  "agb_regression": {
+    "task": "Above Ground Biomass (AGB) Prediction",
+    "unit": "kg",
+    "training_samples": 229,
+    "total_dataset": 4663,
+    "note": "Only 229 records had valid positive diameter, height, and AGB values for reliable training.",
+    "models": {
+      "KNN": {
+        "R2": 0.9859,
+        "MAE": null,
+        "RMSE": null,
+        "CV_R2": null,
+        "selected": false
+      },
+      "Neural_Network": {
+        "R2": 0.9914,
+        "MAE": null,
+        "RMSE": null,
+        "CV_R2": null,
+        "selected": false
+      },
+      "Random_Forest": {
+        "R2": 0.9989,
+        "MAE": 0.0368,
+        "RMSE": 0.0712,
+        "CV_R2": 0.999,
+        "selected": true
+      }
+    },
+    "selected_model": "Random Forest",
+    "selection_reason": "Highest R\u00b2 (0.9989) and lowest error metrics"
+  },
+  "degradation_classification": {
+    "task": "Vegetation Degradation Level Classification",
+    "classes": [
+      "Healthy",
+      "Moderately Degraded",
+      "Severely Degraded"
+    ],
+    "training_samples": 6000,
+    "models": {
+      "KNN": {
+        "Accuracy": 0.9142,
+        "Macro_F1": null,
+        "selected": false
+      },
+      "Neural_Network": {
+        "Accuracy": 0.9317,
+        "Macro_F1": null,
+        "selected": false
+      },
+      "Random_Forest": {
+        "Accuracy": 0.9375,
+        "Macro_F1": 0.9276,
+        "selected": true
+      }
+    },
+    "selected_model": "Random Forest",
+    "selection_reason": "Highest accuracy (93.75%) and Macro F1 (0.9276)"
+  },
+  "image_prototype": {
+    "task": "Vegetation Image Classification (Prototype)",
+    "dataset": "Synthetic data for pipeline verification",
+    "note": "These are prototype results using synthetic image data. Not real-world performance.",
+    "models": {
+      "CNN": {
+        "Accuracy": 1.0,
+        "Macro_F1": 1.0,
+        "Parameters": 24003,
+        "selected": false
+      },
+      "ViT": {
+        "Accuracy": 1.0,
+        "Macro_F1": 1.0,
+        "Parameters": 563715,
+        "selected": false
+      }
+    },
+    "selected_model": "TBD",
+    "selection_reason": "Real image collection pending. Final selection will be based on real-world performance."
+  },
+  "architecture_decision": {
+    "production_model": "Random Forest",
+    "production_tasks": [
+      "AGB Regression",
+      "Degradation Classification"
+    ],
+    "image_models": "Prototype stage - CNN and ViT require real campus images for production deployment",
+    "future_work": "Collect real vegetation images and retrain CNN/ViT for production image classification"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "model": "EfficientNet-B0",
+  "architecture": "EfficientNet-B0 CNN",
+  "task": "AGB Regression",
+  "target": "AGB",
+  "unit": "kg",
+  "carbon_factor": 0.47,
+  "modelVersion": "efficientnet-b0-v1",
+  "input_size": 224,
+  "pretrained": true,
+  "pretrained_weights": "EfficientNet_B0_Weights.IMAGENET1K_V1",
+  "trained_on_campus_data": false,
+  "dataset_source": "C:\\Users\\dinesh\\Desktop\\AGB PROJECT\\ai\\datasets\\image_agb",
+  "dataset_description": "Synthetic tree/canopy images with AGB encoded as visual features (canopy density, trunk girth, leaf coverage). Generated deterministically from field-measured AGB labels. General-purpose for tree/canopy images.",
+  "loss_function": "MSELoss",
+  "loss_rationale": "Narrow AGB range (3-16 kg) gives well-scaled gradients; MSE is interpretable for regression.",
+  "status": "trained",
+  "split_strategy": "group_shuffle_split by tree_id (80/10/10), no leakage",
+  "training": {
+    "seed": 42,
+    "batch_size": 32,
+    "phase1": {
+      "description": "Frozen backbone, train regression head",
+      "epochs": 6,
+      "learning_rate": 0.001,
+      "elapsed_seconds": 433.3
+    },
+    "phase2": {
+      "description": "Fine-tune all layers (unfrozen)",
+      "epochs": 14,
+      "learning_rate": 3e-05,
+      "weight_decay": 1e-05,
+      "elapsed_seconds": 2687.9
+    },
+    "total_epochs": 20,
+    "optimizer": "Adam",
+    "scheduler": "ReduceLROnPlateau(factor=0.5, patience=3)",
+    "augmentation": [
+      "RandomResizedCrop(224, scale=0.8-1.0)",
+      "RandomHorizontalFlip(p=0.5)",
+      "RandomRotation(15 degrees)",
+      "ColorJitter(brightness=0.15, contrast=0.15, saturation=0.15)"
+    ]
+  },
+  "dataset_size": 600,
+  "train_size": 480,
+  "validation_size": 60,
+  "test_size": 60,
+  "train_trees": 24,
+  "validation_trees": 3,
+  "test_trees": 3,
+  "metrics": {
+    "r2": 0.7924939365850588,
+    "mae": 1.1800472478071848,
+    "rmse": 1.5149058287031096,
+    "val_loss": 2.0816530068715413,
+    "val_mae": 1.2009504328171412,
+    "val_rmse": 1.4427934660737325,
+    "val_r2": -1.2892956116472059,
+    "test_loss": 2.2949396769205728
+  },
+  "dataset_stats": {
+    "agb_min": 2.9876,
+    "agb_max": 15.331,
+    "agb_mean": 8.600386666666667,
+    "agb_median": 8.052249999999999
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "model_type": "CatBoostRegressor",
+  "model_version": "catboost-agb-v1",
+  "target": "AGB",
+  "features": [
+    "diameter",
+    "height",
+    "year",
+    "group",
+    "site"
+  ],
+  "categorical_features": [
+    "group",
+    "site"
+  ],
+  "random_state": 42,
+  "training_samples": 183,
+  "test_samples": 46,
+  "total_samples": 229,
+  "metrics": {
+    "test_r2": 0.9959,
+    "test_mae": 0.0764,
+    "test_rmse": 0.1358,
+    "cv_r2_mean": 0.9886,
+    "cv_r2_std": 0.0127,
+    "cv_r2_folds": [
+      0.9955,
+      0.9638,
+      0.9979,
+      0.9897,
+      0.9961
+    ]
+  },
+  "feature_importance": {
+    "diameter": 89.88194219074764,
+    "height": 3.113634139497965,
+    "year": 2.6498074699969836,
+    "group": 0.0,
+    "site": 4.354616199757411
+  },
+  "data_leakage_warning": {
+    "detected": true,
+    "description": "AGB is mathematically derived from diameter using a power-law relationship (AGB = 0.1208 * diameter^1.98). The model learns this embedded formula rather than predicting independently measured biomass. High R\u00b2 values reflect this derivation, not independent prediction accuracy."
+  },
+  "validation_method": "5-Fold Cross Validation + Hold-out Test Set",
+  "parameters": {
+    "iterations": 500,
+    "learning_rate": 0.05,
+    "depth": 6,
+    "l2_leaf_reg": 3.0,
+    "loss_function": "RMSE",
+    "early_stopping_rounds": 50
+  }
+}
