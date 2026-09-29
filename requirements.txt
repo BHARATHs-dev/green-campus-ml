@@ -5,6 +5,7 @@ joblib
 catboost
 fastapi
 uvicorn
+python-multipart==0.0.20
 pydantic
 torch
 torchvision
