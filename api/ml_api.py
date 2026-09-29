@@ -14,7 +14,7 @@ import numpy as np
 import json
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 logger = logging.getLogger("uvicorn")
 
@@ -29,7 +29,7 @@ app = FastAPI(
 # Load AGB CatBoost model (production, must be preserved)
 # =========================================================
 
-AGB_MODEL_PATH = BASE_DIR / "ai" / "models" / "catboost_agb_model.cbm"
+AGB_MODEL_PATH = BASE_DIR / "models" / "catboost_agb_model.cbm"
 
 agb_model = CatBoostRegressor()
 agb_model.load_model(str(AGB_MODEL_PATH))
@@ -44,8 +44,8 @@ REQUIRED_BANDS = ["B2", "B3", "B4", "B8", "B11", "B12"]
 # EfficientNet-B0 Image Model
 # =========================================================
 
-EFFICIENTNET_MODEL_PATH = BASE_DIR / "ai" / "models" / "efficientnet_agb.pth"
-EFFICIENTNET_METADATA_PATH = BASE_DIR / "ai" / "models" / "efficientnet_agb_metadata.json"
+EFFICIENTNET_MODEL_PATH = BASE_DIR / "models" / "efficientnet_agb.pth"
+EFFICIENTNET_METADATA_PATH = BASE_DIR / "models" / "efficientnet_agb_metadata.json"
 
 image_model = None
 image_transform = None
@@ -110,8 +110,8 @@ def _load_image_model():
 # Satellite CNN Model
 # =========================================================
 
-SATELLITE_MODEL_PATH = BASE_DIR / "ai" / "models" / "satellite_cnn_agb.pth"
-SATELLITE_METADATA_PATH = BASE_DIR / "ai" / "models" / "satellite_cnn_agb_metadata.json"
+SATELLITE_MODEL_PATH = BASE_DIR / "models" / "satellite_cnn_agb.pth"
+SATELLITE_METADATA_PATH = BASE_DIR / "models" / "satellite_cnn_agb_metadata.json"
 
 satellite_model = None
 satellite_predictor = None
