@@ -20,7 +20,7 @@ from rasterio.enums import Resampling
 from rasterio.warp import reproject
 from rasterio import Affine
 
-from ..utils.spectral import (
+from utils.spectral import (
     apply_spectral_indices,
 )
 

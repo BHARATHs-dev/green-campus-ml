@@ -27,21 +27,21 @@ import rasterio
 import torch
 from torchvision import transforms
 
-from ..models.satellite_cnn import SatelliteCNN, build_satellite_cnn
-from ..preprocessing.sentinel2_preprocessor import (
+from models.satellite_cnn import SatelliteCNN, build_satellite_cnn
+from preprocessing.sentinel2_preprocessor import (
     preprocess_sentinel2,
     DEFAULT_FEATURE_BANDS,
     REQUIRED_BANDS,
     SENTINEL2_BANDS,
     Sentinel2Normalizer,
 )
-from ..utils.spectral import apply_spectral_indices, normalize_band
+from utils.spectral import apply_spectral_indices, normalize_band
 
 logger = logging.getLogger(__name__)
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-MODEL_PATH = BASE_DIR / "ai" / "models" / "satellite_cnn_agb.pth"
-METADATA_PATH = BASE_DIR / "ai" / "models" / "satellite_cnn_agb_metadata.json"
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODEL_PATH = BASE_DIR / "models" / "satellite_cnn_agb.pth"
+METADATA_PATH = BASE_DIR / "models" / "satellite_cnn_agb_metadata.json"
 INPUT_SIZE = 224
 CARBON_FACTOR = 0.47
 MODEL_VERSION = "satellite-cnn-prototype-v1"
@@ -376,8 +376,13 @@ class SatellitePredictor:
         self._load_normalizer()
         in_channels = self.metadata.get("in_channels", 6)
 
-        model = SatelliteCNN(in_channels=in_channels)
         state_dict = torch.load(self.model_path, map_location=self.device)
+        is_baseline = "conv1.weight" in state_dict and "init_conv.weight" not in state_dict
+        if is_baseline:
+            from models.satellite_cnn import BaselineSatelliteCNN
+            model = BaselineSatelliteCNN(in_channels=in_channels)
+        else:
+            model = SatelliteCNN(in_channels=in_channels)
         model.load_state_dict(state_dict)
         model.eval()
         self.model = model

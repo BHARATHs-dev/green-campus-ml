@@ -22,7 +22,7 @@ import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from ..utils.spectral import apply_spectral_indices
+from utils.spectral import apply_spectral_indices
 from .sentinel2_preprocessor import (
     preprocess_sentinel2,
     DEFAULT_FEATURE_BANDS,

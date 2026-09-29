@@ -132,7 +132,7 @@ def _load_satellite_model():
         return
 
     try:
-        from ..inference.satellite_predictor import SatellitePredictor
+        from inference.satellite_predictor import SatellitePredictor
         satellite_predictor = SatellitePredictor(
             model_path=SATELLITE_MODEL_PATH,
             metadata_path=SATELLITE_METADATA_PATH,

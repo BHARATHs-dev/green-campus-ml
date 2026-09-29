@@ -306,9 +306,17 @@ def load_satellite_checkpoint(
     in_channels = meta.get("input_channels", meta.get("in_channels", 15))
     arch = meta.get("architecture", "Residual CNN + Spatial Attention")
 
-    model = build_satellite_cnn(architecture=arch, in_channels=in_channels)
     map_location = device if device is not None else torch.device("cpu")
     state_dict = torch.load(checkpoint_path, map_location=map_location)
+    is_baseline = (
+        "baseline" in arch.lower()
+        or arch.startswith("SatelliteCNN(Conv32")
+        or ("conv1.weight" in state_dict and "init_conv.weight" not in state_dict)
+    )
+    if is_baseline:
+        model = BaselineSatelliteCNN(in_channels=in_channels)
+    else:
+        model = build_satellite_cnn(architecture=arch, in_channels=in_channels)
     model.load_state_dict(state_dict)
     if device is not None:
         model.to(device)
