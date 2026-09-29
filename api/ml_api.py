@@ -25,6 +25,14 @@ app = FastAPI(
 )
 
 
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "service": "green-campus-ml",
+    }
+
+
 # =========================================================
 # Load AGB CatBoost model (production, must be preserved)
 # =========================================================
