@@ -489,6 +489,7 @@ class SatellitePredictor:
 
         agbd = max(0.0, float(agbd_raw))
         carbon = agbd * CARBON_FACTOR
+        del tensor_t, tensor
 
         model_version = self.metadata.get("model_version", MODEL_VERSION)
         status = self.metadata.get("status", "trained")
@@ -549,7 +550,12 @@ def load_model(
 ):
     """
     Public helper to instantiate a predictor and load the model.
+    Uses cached ModelManager singleton when default paths are used.
     """
+    if model_path is None and metadata_path is None and normalizer_path is None:
+        from models.model_manager import get_satellite_predictor
+        return get_satellite_predictor()
+
     predictor = SatellitePredictor(
         model_path=model_path,
         metadata_path=metadata_path,
@@ -557,3 +563,4 @@ def load_model(
     )
     predictor.load()
     return predictor
+

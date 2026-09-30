@@ -1,3 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
 numpy
 pandas
 scikit-learn
@@ -5,9 +8,7 @@ joblib
 catboost
 fastapi
 uvicorn
-python-multipart==0.0.20
+python-multipart>=0.0.20
 pydantic
-torch
-torchvision
 pillow
 rasterio

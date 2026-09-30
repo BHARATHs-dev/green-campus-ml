@@ -56,31 +56,14 @@ def _get_paths():
 
 def load_model_and_metadata():
     """
-    Load the trained EfficientNet-B0 checkpoint and its metadata.
-
-    Returns (model, device, metadata).
-    Raises FileNotFoundError if model is missing or empty.
+    Load the trained EfficientNet-B0 checkpoint and its metadata using ModelManager.
+    Cached as a singleton on CPU.
     """
-    model_path, metadata_path = _get_paths()
-
-    if not model_path.exists() or model_path.stat().st_size == 0:
-        raise FileNotFoundError(
-            f"Model checkpoint is missing or empty: {model_path}. "
-            "Run ai/training/train_image_cnn.py first."
-        )
-
+    from models.model_manager import get_model_manager
+    manager = get_model_manager()
+    model, _ = manager.get_image_model_and_transform()
+    metadata = manager.get_image_metadata() or {}
     device = torch.device("cpu")
-
-    model = EfficientNetAGB()
-    state_dict = torch.load(model_path, map_location=device)
-    model.load_state_dict(state_dict)
-    model.eval()
-
-    metadata = {}
-    if metadata_path.exists():
-        with open(metadata_path) as f:
-            metadata = json.load(f)
-
     return model, device, metadata
 
 
@@ -101,54 +84,11 @@ def compute_image_diagnostics(image_path: str):
     Compute interpretable image statistics for quality assessment (req. 22).
     These are NOT fed into the model — they are for display / warning only.
 
-    Returns a dict with: width, height, aspect_ratio, mean_rgb, green_pixel_ratio,
-    brightness, contrast, is_blank, is_extremely_dark, quality_warning.
+    Memory-optimized: uses thumbnail for luminance/contrast calculation.
     """
-    img = Image.open(image_path).convert("RGB")
-    arr = np.array(img).astype(np.float32) / 255.0
+    with Image.open(image_path) as img:
+        return compute_image_diagnostics_from_pil(img)
 
-    r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
-
-    # Mean RGB channels
-    mean_rgb = {
-        "r": round(float(r.mean()), 4),
-        "g": round(float(g.mean()), 4),
-        "b": round(float(b.mean()), 4),
-    }
-
-    # Green pixel ratio: pixels where green channel is dominant
-    green_mask = (g > r) & (g > b) & (g > 0.3)
-    green_ratio = round(float(green_mask.mean()), 4)
-
-    # Brightness (perceived luminance)
-    lum = 0.299 * r + 0.587 * g + 0.114 * b
-    brightness = round(float(lum.mean()), 4)
-
-    # Contrast (std of luminance)
-    contrast = round(float(lum.std()), 4)
-
-    width, height = img.size
-    aspect_ratio = round(width / height, 4)
-
-    # Quality flags
-    is_blank = bool(lum.std() < 1e-6)
-    is_extremely_dark = bool(brightness < 0.05)
-    is_very_small = bool(width < 64 or height < 64)
-    quality_warning = bool(is_blank or is_extremely_dark or is_very_small)
-
-    return {
-        "width": width,
-        "height": height,
-        "aspect_ratio": aspect_ratio,
-        "mean_rgb": mean_rgb,
-        "green_pixel_ratio": green_ratio,
-        "brightness": brightness,
-        "contrast": round(contrast, 4),
-        "is_blank": is_blank,
-        "is_extremely_dark": is_extremely_dark,
-        "is_very_small": is_very_small,
-        "quality_warning": quality_warning,
-    }
 
 
 def predict_image(image_path: str):
@@ -245,8 +185,18 @@ def predict_image_from_bytes(image_bytes: bytes):
 
 
 def compute_image_diagnostics_from_pil(img: Image.Image):
-    """Compute image diagnostics from an already-opened PIL Image."""
-    arr = np.array(img.convert("RGB")).astype(np.float32) / 255.0
+    """
+    Compute image diagnostics from an already-opened PIL Image.
+    Uses a small thumbnail copy for luminance/contrast to avoid allocating large arrays.
+    """
+    width, height = img.size
+
+    # Memory-safe thumbnail for statistical checks (max 256x256)
+    thumb = img.copy()
+    thumb.thumbnail((256, 256), Image.Resampling.BILINEAR)
+    arr = np.array(thumb.convert("RGB"), dtype=np.float32) / 255.0
+    del thumb
+
     r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
 
     mean_rgb = {
@@ -261,21 +211,24 @@ def compute_image_diagnostics_from_pil(img: Image.Image):
     lum = 0.299 * r + 0.587 * g + 0.114 * b
     brightness = round(float(lum.mean()), 4)
     contrast = round(float(lum.std()), 4)
+    is_blank = bool(lum.std() < 1e-6)
+    del arr
 
-    width, height = img.size
+    is_extremely_dark = bool(brightness < 0.05)
+    is_very_small = bool(width < 64 or height < 64)
+    quality_warning = bool(is_blank or is_extremely_dark or is_very_small)
 
     return {
         "width": width,
         "height": height,
-        "aspect_ratio": round(width / height, 4),
+        "aspect_ratio": round(width / height, 4) if height else 0.0,
         "mean_rgb": mean_rgb,
         "green_pixel_ratio": green_ratio,
         "brightness": brightness,
         "contrast": contrast,
-        "is_blank": bool(lum.std() < 1e-6),
-        "is_extremely_dark": bool(brightness < 0.05),
-        "is_very_small": bool(width < 64 or height < 64),
-        "quality_warning": bool(
-            lum.std() < 1e-6 or brightness < 0.05 or width < 64 or height < 64
-        ),
+        "is_blank": is_blank,
+        "is_extremely_dark": is_extremely_dark,
+        "is_very_small": is_very_small,
+        "quality_warning": quality_warning,
     }
+
